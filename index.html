@@ -500,7 +500,7 @@
 <body>
 
 <!-- ── PIN LOCK SCREEN ── -->
-<div class="pin-screen" id="pinScreen">
+<div class="pin-screen" id="pinScreen" style="position:fixed;inset:0;z-index:9999;background:#0f172a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:32px;">
   <div class="pin-logo">
     <span class="a">A</span><span class="p">P</span>
   </div>
@@ -1114,6 +1114,7 @@
   function checkPin() {
     if (pinBuffer === PIN_CODE) {
       document.getElementById('pinScreen').classList.add('hidden');
+      document.getElementById('pinScreen').style.display = 'none';
       init();
     } else {
       for (let i = 0; i < 4; i++) {
