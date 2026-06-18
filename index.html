@@ -713,49 +713,7 @@
     fixedExpenses: []
   };
 
-  // ── PIN ──
-  const PIN_CODE = '7289'; // 🔐 Cambia este PIN
-  let pinBuffer = '';
   let appInitialized = false;
-
-  function pinPress(digit) {
-    if (pinBuffer.length >= 4) return;
-    pinBuffer += digit;
-    updatePinDots();
-    if (pinBuffer.length === 4) setTimeout(checkPin, 120);
-  }
-
-  function pinDel() {
-    pinBuffer = pinBuffer.slice(0, -1);
-    updatePinDots();
-    document.getElementById('pinError').textContent = '';
-  }
-
-  function updatePinDots() {
-    for (let i = 0; i < 4; i++) {
-      const d = document.getElementById('d' + i);
-      d.classList.toggle('filled', i < pinBuffer.length);
-      d.classList.remove('error');
-    }
-  }
-
-  function checkPin() {
-    if (pinBuffer === PIN_CODE) {
-      document.getElementById('pinScreen').classList.add('hidden');
-      init();
-    } else {
-      for (let i = 0; i < 4; i++) {
-        const d = document.getElementById('d' + i);
-        d.classList.remove('filled'); d.classList.add('error');
-      }
-      document.getElementById('pinError').textContent = 'PIN incorrecto';
-      pinBuffer = '';
-      setTimeout(() => {
-        updatePinDots();
-        document.getElementById('pinError').textContent = '';
-      }, 800);
-    }
-  }
 
   // ── INIT ──
   async function init() {
@@ -1127,6 +1085,49 @@
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2500);
   }
+
+  // ── PIN ──
+  const PIN_CODE = '0000'; // cambia este valor al PIN real
+  let pinBuffer = '';
+
+  function pinPress(digit) {
+    if (pinBuffer.length >= 4) return;
+    pinBuffer += digit;
+    updatePinDots();
+    if (pinBuffer.length === 4) setTimeout(checkPin, 120);
+  }
+
+  function pinDel() {
+    pinBuffer = pinBuffer.slice(0, -1);
+    updatePinDots();
+    document.getElementById('pinError').textContent = '';
+  }
+
+  function updatePinDots() {
+    for (let i = 0; i < 4; i++) {
+      const d = document.getElementById('d' + i);
+      d.classList.toggle('filled', i < pinBuffer.length);
+      d.classList.remove('error');
+    }
+  }
+
+  function checkPin() {
+    if (pinBuffer === PIN_CODE) {
+      document.getElementById('pinScreen').classList.add('hidden');
+      init();
+    } else {
+      for (let i = 0; i < 4; i++) {
+        const d = document.getElementById('d' + i);
+        d.classList.remove('filled');
+        d.classList.add('error');
+      }
+      document.getElementById('pinError').textContent = 'PIN incorrecto';
+      pinBuffer = '';
+      setTimeout(updatePinDots, 800);
+    }
+  }
+
+  // NO llamar init() aquí — se llama solo después del PIN correcto
 
 </script>
 </body>
