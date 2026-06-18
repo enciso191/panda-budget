@@ -717,6 +717,7 @@
   const PIN_CODE = '7289'; // 🔐 Cambia este PIN
   const SESSION_KEY = 'ap_budget_unlocked';
   let pinBuffer = '';
+  let appInitialized = false;
 
   function pinPress(digit) {
     if (pinBuffer.length >= 4) return;
@@ -759,18 +760,22 @@
   }
 
   // Check if already unlocked this session
-  if (sessionStorage.getItem(SESSION_KEY)) {
+  if (sessionStorage.getItem(SESSION_KEY) === '1') {
     document.getElementById('pinScreen').classList.add('hidden');
     init();
   }
 
   // ── INIT ──
   async function init() {
+    if (appInitialized) return;
+    appInitialized = true;
+
     try {
       await Promise.all([loadSettings(), loadCards(), loadCategories(), loadExpenses(), loadFixed()]);
       renderAll();
       subscribeRealtime();
     } catch(e) {
+      appInitialized = false;
       showToast('⚠️ Error conectando a Supabase');
       console.error(e);
     }
@@ -1131,8 +1136,6 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  // ── START ──
-  init();
 </script>
 </body>
 </html>
