@@ -715,7 +715,6 @@
 
   // ── PIN ──
   const PIN_CODE = '7289'; // 🔐 Cambia este PIN
-  const SESSION_KEY = 'ap_budget_unlocked';
   let pinBuffer = '';
   let appInitialized = false;
 
@@ -742,7 +741,6 @@
 
   function checkPin() {
     if (pinBuffer === PIN_CODE) {
-      sessionStorage.setItem(SESSION_KEY, '1');
       document.getElementById('pinScreen').classList.add('hidden');
       init();
     } else {
@@ -757,12 +755,6 @@
         document.getElementById('pinError').textContent = '';
       }, 800);
     }
-  }
-
-  // Check if already unlocked this session
-  if (sessionStorage.getItem(SESSION_KEY) === '1') {
-    document.getElementById('pinScreen').classList.add('hidden');
-    init();
   }
 
   // ── INIT ──
